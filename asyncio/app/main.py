@@ -9,6 +9,10 @@ MAX_CHUNK = 5
 
 
 async def get_person(person_id, session):
+    list_films = []
+    list_species = []
+    list_starships = []
+    list_vehicles = []
     http_response = await session.get(
         f"https://swapi.py4e.com/api/people/{person_id}/")
     json_data = await http_response.json()
@@ -18,19 +22,15 @@ async def get_person(person_id, session):
             for get in value:
                 response_http = await session.get(f"{get}")
                 data = await response_http.json()
-                list_films = []
                 if key == 'films':
                     list_films.append(data.get('title'))
                     json_data.update({'films': list_films})
-                list_species = []
                 if key == 'species':
                     list_species.append(data.get('name'))
                     json_data.update({'species': list_species})
-                list_starships = []
                 if key == 'starships':
-                    list_species.append(data.get('name'))
-                    json_data.update({'species': list_starships})
-                list_vehicles = []
+                    list_starships.append(data.get('name'))
+                    json_data.update({'starships': list_starships})
                 if key == 'vehicles':
                     list_vehicles.append(data.get('name'))
                     json_data.update({'vehicles': list_vehicles})
