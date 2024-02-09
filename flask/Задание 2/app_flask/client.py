@@ -1,17 +1,17 @@
 import requests
 
-# # регестрация пользователя и получения токена
+# регестрация пользователя и получения токена
 # response = requests.post(
 #     "http://127.0.0.1:5000/registration",
-#     json={"password": "123456789", "email": "email2",
+#     json={"password": "123456789", "email": "email21",
 #           "user": "user2"},
 # )
 #
 # # создание обьявление авторизованым пользователем
-# response = requests.post(
-#     "http://127.0.0.1:5000/announcement",
-#     json={"title": "title1", "description": 'descriptions1', "user_id": 2},
-# )
+response = requests.post(
+    "http://127.0.0.1:5000/announcement",
+    json={"title": "title1", "description": 'descriptions1', "user_id": 2},
+)
 
 # response = requests.get(
 #     "http://127.0.0.1:5000/announcement/1",

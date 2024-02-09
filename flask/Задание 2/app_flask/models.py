@@ -1,6 +1,6 @@
 from sqlalchemy import DateTime, String, create_engine, func, UUID, ForeignKey
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, \
-    sessionmaker
+    sessionmaker,relationship
 
 import datetime
 import os
@@ -11,7 +11,7 @@ POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "secret")
 POSTGRES_USER = os.getenv("POSTGRES_USER", "ystas")
 POSTGRES_DB = os.getenv("POSTGRES_DB", "app")
 POSTGRES_HOST = os.getenv("POSTGRES_HOST", "127.0.0.1")
-POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5431")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5430")
 
 PG_DSN = (f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:"
           f"{POSTGRES_PORT}/{POSTGRES_DB}")
@@ -57,7 +57,9 @@ class Announcement(Base):
     description: Mapped[str] = mapped_column(String(500), nullable=False)
     date_of_creation: Mapped[datetime.datetime] = mapped_column(
         DateTime, server_default=func.now())
-    user_id: Mapped[int] = mapped_column(ForeignKey("token.id"))
+    # user_id: Mapped[int] = mapped_column(ForeignKey("token.id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("token.id", ondelete="CASCADE"))
+    user: Mapped[Token] = relationship(Token,lazy="joined")
 
     @property
     def dict(self):
@@ -70,6 +72,5 @@ class Announcement(Base):
 
         }
 
-
-Base.metadata.create_all(bind=engine)
 # Base.metadata.drop_all(bind=engine)
+Base.metadata.create_all(bind=engine)

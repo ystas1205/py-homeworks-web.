@@ -88,7 +88,7 @@ def token_headers():
     return headers_token
 
 
-# получение токена из талицы Тоken для сравнения с заголовком
+# получение токена из таблицы Тоken для сравнения с заголовком
 def token_auth(token_id: int):
     user = get_advertisement_by_id(token_id)
     data_userid = user.user_id
