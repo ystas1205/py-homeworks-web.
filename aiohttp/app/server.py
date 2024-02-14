@@ -58,6 +58,7 @@ async def get_token_by_id(session: Session, token_id: int):
     return token
 
 
+# добавление в сессию токена и обьявления
 async def add_token_announcement(session: Session, data):
     try:
         session.add(data)
@@ -70,6 +71,7 @@ async def add_token_announcement(session: Session, data):
     return data
 
 
+# Проверка авторизации по токену
 async def authorization_by_token(id_token):
     headers = id_token.request.headers
     headers_token = headers["Token"]
@@ -84,6 +86,7 @@ async def authorization_by_token(id_token):
     raise get_http_error(web.HTTPNotFound, (404, "token not found"))
 
 
+# Регестрация пользователя и получения токента
 class LoginView(web.View):
 
     async def post(self):
@@ -109,7 +112,6 @@ class AnnouncementView(web.View):
         return await get_announcement_by_id(self.session, self.announcement_id)
 
     # Создание обьявление авторизованым пользователем
-
     async def post(self):
         json_data = await self.request.json()
         json_data = validate(CreateAnnouncement, json_data)
@@ -120,15 +122,18 @@ class AnnouncementView(web.View):
             await add_token_announcement(self.session, announcement)
         return web.json_response(str(announcement.dict))
 
+    # Получения обьявление по id
     async def get(self):
         announcement = await self.get_announcement()
         return web.json_response(announcement.dict)
 
+    # Удаление обьявление владельцем
     async def delete(self):
         await self.session.delete(await authorization_by_token(self))
         await self.session.commit()
         return web.json_response({"status": "deleted"})
 
+    # Изменение обьявление владельцем
     async def patch(self):
         json_data = await self.request.json()
         json_data = validate(UpdateAnnouncement, json_data)

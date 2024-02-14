@@ -17,13 +17,12 @@ response = requests.post(
 #     "http://127.0.0.1:8080/announcement/11",
 # )
 
-# удаление обьявление владельцем
-
+# # удаление обьявление владельцем
 # response = requests.delete(
 #     "http://127.0.0.1:8080/announcement/10",
 #     headers={"token": "c4ca02f0-3f28-4d07-8c76-16ec9842020d"}
 # )
-#
+# # замена обьявление владельцем
 # response = requests.patch(
 #     "http://127.0.0.1:8080/announcement/1",
 #     json={"title": "title2", "description": 'descriptions2'},
